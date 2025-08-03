@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Fire Max - Garena Top-Up</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #0e0e1a;
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+    .wheel-container {
+      margin: 20px auto 10px;
+      display: flex;
+      justify-content: center;
+    }
+    .wheel {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 6px solid white;
+      position: relative;
+      background: conic-gradient(#ffb400 0% 12.5%, #ff5e57 12.5% 25%, #00d2ff 25% 37.5%, #00ff99 37.5% 50%, #ffc107 50% 62.5%, #ec38bc 62.5% 75%, #4facfe 75% 87.5%, #43e97b 87.5% 100%);
+      animation: spin 5s linear infinite;
+      box-shadow: 0 0 20px #222;
+    }
+    .wheel::after {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 20px solid #fff;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .title {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      margin: 15px 0 7px;
+      letter-spacing: 1px;
+      text-align: center;
+      text-shadow: 0 2px 8px #0009;
+    }
+    .container {
+      width: 90%;
+      max-width: 400px;
+    }
+    .row {
+      background: linear-gradient(90deg, #2b2b3a 60%, #232347 100%);
+      border-radius: 14px;
+      padding: 13px 17px 10px 17px;
+      margin-bottom: 18px;
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.07);
+      border: 1.5px solid #282847;
+    }
+    h2 {
+      font-size: 16px;
+      color: #ffb400;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 0;
+      font-size: 14px;
+      border-bottom: 1px solid #232347;
+    }
+    .item:last-child {
+      border-bottom: none;
+    }
+    .button {
+      background: linear-gradient(90deg, #ffb400 60%, #ffea8a 100%);
+      color: #2b2b3a;
+      border: none;
+      padding: 5px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 500;
+      box-shadow: 0 2px 6px #0003;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .button:hover {
+      background: linear-gradient(90deg, #ffc533 60%, #fff2b0 100%);
+      box-shadow: 0 4px 12px #ffea8a44;
+    }
+    .discount-badge {
+      background: #43e97b;
+      color: #171726;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 5px;
+      padding: 1px 7px 2px 7px;
+      margin-left: 8px;
+      margin-right: 0;
+      letter-spacing: 0.5px;
+      vertical-align: middle;
+      box-shadow: 0 1px 4px #43e97b33;
+      display: inline-block;
+    }
+    .original-price {
+      text-decoration: line-through;
+      color: #ff5e57;
+      margin-right: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0.7;
+    }
+    .discounted-price {
+      color: #ffc107;
+      font-size: 15px;
+      font-weight: 600;
+      margin-right: 5px;
+    }
+    .wheel-section {
+      background: linear-gradient(90deg, #2b2b3a 60%, #232347 100%);
+      border-radius: 16px;
+      padding: 19px 13px 17px 13px;
+      margin: 13px auto 17px auto;
+      width: 90%;
+      max-width: 400px;
+      color: #fff;
+      box-shadow: 0 0 18px rgba(255, 255, 255, 0.07);
+      border: 1.5px solid #282847;
+    }
+    .wheel-section h2 {
+      color: #f06292;
+      margin-bottom: 10px;
+      font-size: 17px;
+      letter-spacing: 0.5px;
+    }
+    .footer {
+      margin: 26px 0 8px 0;
+      font-size: 13px;
+      color: #ffffffb0;
+      text-align: center;
+      letter-spacing: 0.2px;
+      text-shadow: 0 1px 2px #0006;
+    }
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(120deg, #13132c 60%, #232347 100%);
+      background-color: rgba(0, 0, 0, 0.69);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .modal-content {
+      background: linear-gradient(120deg, #2a2a3d 60%, #232347 100%);
+      padding: 24px 17px 20px 17px;
+      border-radius: 16px;
+      width: 94%;
+      max-width: 370px;
+      text-align: center;
+      box-shadow: 0 8px 42px #000c;
+      border: 2.5px solid #171726;
+      position: relative;
+    }
+    .modal-content input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 13px;
+      border-radius: 7px;
+      border: 1.5px solid #232347;
+      font-size: 15px;
+      background: #232347;
+      color: #fff;
+      outline: none;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px #0002;
+    }
+    .close-button, .pay-button, .copy-upi {
+      margin-top: 18px;
+      padding: 8px 24px;
+      border-radius: 7px;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      box-shadow: 0 2px 10px #0002;
+    }
+    .close-button {
+      background: linear-gradient(90deg, #ff5e57 60%, #ffb4a1 100%);
+      color: #fff;
+      margin-right: 8px;
+    }
+    .close-button:hover {
+      background: linear-gradient(90deg, #ff8c7e 60%, #ffd3c7 100%);
+    }
+    .pay-button {
+      background: linear-gradient(90deg, #43e97b 60%, #38f9d7 100%);
+      color: #171726;
+      margin-left: 8px;
+    }
+    .pay-button:hover:not([disabled]) {
+      background: linear-gradient(90deg, #00ff99 60%, #43e97b 100%);
+      color: #232347;
+      box-shadow: 0 4px 12px #43e97b44;
+    }
+    .pay-button[disabled] {
+      background: #888;
+      color: #fff;
+      cursor: not-allowed;
+      opacity: 0.75;
+      box-shadow: none;
+    }
+    .qr-section {
+      margin: 16px 0 0 0;
+      text-align: center;
+    }
+    .upi-details {
+      margin-top: 10px;
+      color: #ffc107;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    .timer {
+      margin: 10px 0 6px 0;
+      font-size: 18px;
+      color: #ff5e57;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+    .copy-upi {
+      background: #282847;
+      color: #ffc107;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 18px;
+      font-size: 13px;
+      margin-top: 7px;
+      margin-bottom: 8px;
+      margin-left: 0;
+      box-shadow: 0 2px 10px #0002;
+      display: inline-block;
+    }
+    .copy-upi:hover {
+      background: #ffc107;
+      color: #1f1f2e;
+    }
+    .copy-upi:active {
+      background: #0e0e1a;
+    }
+    .uid-error {
+      color: #ff5e57;
+      font-size: 13px;
+      margin-top: 7px;
+      margin-bottom: -7px;
+      display: none;
+      text-align: left;
+      font-weight: 500;
+    }
+    .modal-content .modal-label {
+      color: #ffb400;
+      display: block;
+      margin-top: 4px;
+      font-size: 15px;
+      margin-bottom: 0px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-align: left;
+    }
+    .modal-content h3 {
+      margin-top: 2px;
+      font-size: 22px;
+      color: #fff;
+      font-weight: 700;
+      text-shadow: 0 1px 2px #0004;
+    }
+    .modal-content p {
+      color: #eaeaea;
+      font-size: 15px;
+      margin-bottom: 3px;
+      margin-top: 8px;
+    }
+    .modal-content .pay-label {
+      color: #43e97b;
+      font-size: 15px;
+      margin-bottom: 7px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-top: 6px;
+    }
+    @media (max-width: 530px) {
+      .modal-content {
+        padding: 13px 3vw 13px 3vw;
+      }
+      .container, .wheel-section {
+        max-width: 97vw;
+      }
+    }
+  </style>
+  <script>
+    // Prices for plans
+    const plans = {
+      "EVO Access (7 Days)": 100,
+      "EVO Access (30 Days)": 290,
+      "Membership (Weekly Lite)": 50,
+      "Membership (Weekly)": 159,
+      "Membership (Monthly)": 799,
+      "100 Diamonds": 80,
+      "520 Diamonds": 400,
+      "2180 Diamonds": 1600,
+      "5600 Diamonds": 4000
+    };
+
+    // Calculate 40% OFF price for each plan
+    function getDiscountedPrice(name) {
+      const original = plans[name];
+      return Math.round(original * 0.6);
+    }
+
+    function showConfirmation(planName, price) {
+      const originalPrice = price;
+      const discountedPrice = getDiscountedPrice(planName);
+
+      const existing = document.querySelector('.modal');
+      if (existing) existing.remove();
+
+      const modal = document.createElement("div");
+      modal.className = "modal";
+      modal.innerHTML = `
+        <div class="modal-content">
+          <h3>${planName}</h3>
+          <p>
+            <span class="original-price">₹${originalPrice}</span>
+            <span class="discounted-price">₹${discountedPrice}</span>
+            <span class="discount-badge">40% OFF</span>
+          </p>
+          <label class="modal-label" for="uid-input">Enter your Free Fire UID</label>
+          <input type="text" placeholder="Free Fire UID (10 digits)" id="uid-input" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" autocomplete="off" />
+          <div class="uid-error" id="uid-error"></div>
+          <div style="margin-top:13px;">
+            <button class="close-button" onclick="this.closest('.modal').remove()">Cancel</button>
+            <button class="pay-button" onclick="proceedToPay('${planName}', ${originalPrice})">Confirm</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      document.getElementById('uid-input').focus();
+    }
+
+    function validateUID(uid) {
+      if (!/^\d+$/.test(uid)) {
+        return "UID must be a number.";
+      }
+      if (uid.length !== 10) {
+        return "UID must be exactly 10 digits.";
+      }
+      return "";
+    }
+
+    function proceedToPay(planName, originalPrice) {
+      const uidInput = document.getElementById('uid-input');
+      const uid = uidInput.value.trim();
+      const errorDiv = document.getElementById('uid-error');
+      const errorMsg = validateUID(uid);
+
+      if (errorMsg) {
+        errorDiv.textContent = errorMsg;
+        errorDiv.style.display = "block";
+        uidInput.focus();
+        return;
+      } else {
+        errorDiv.style.display = "none";
+      }
+
+      document.querySelector('.modal').remove();
+
+      // QR Code (You can generate your own QR, this is a placeholder)
+      // UPDATED UPI NAME TO VANSH DHEER
+      // Use discounted price for payment
+      const discountedPrice = getDiscountedPrice(planName);
+      const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=vanshxseller06@fam&pn=VANSH%20DHEER&am=' + discountedPrice;
+
+      const payModal = document.createElement("div");
+      payModal.className = "modal";
+      payModal.innerHTML = `
+        <div class="modal-content">
+          <div class="timer" id="pay-timer">05:00</div>
+          <h3>Scan & Pay Securely</h3>
+          <div class="qr-section">
+            <img src="${qrUrl}" alt="UPI QR" width="200" height="200" style="border-radius:14px;border:3px solid #ffc107;box-shadow:0 2px 12px #0008;">
+            <div class="upi-details">
+              NAME: VANSH DHEER<br>
+              UPI: vanshxseller06@FAM<br>
+              <button class="copy-upi" onclick="copyUpi()">Copy UPI ID</button>
+            </div>
+          </div>
+          <p style="margin:15px 0 8px 0; font-size:14px;color:#fff">
+            <span class="original-price">₹${originalPrice}</span>
+            <b style="color:#ffc107;font-size:17px;">₹${discountedPrice} (40% OFF)</b><br>
+            <span style="color:#bbb;">Use any UPI app (Paytm, GPay, PhonePe etc.) to make payment.<br>After payment, click the button below.</span>
+          </p>
+          <div style="margin-top:7px;">
+            <button class="close-button" onclick="this.closest('.modal').remove()">Cancel</button>
+            <button class="pay-button" id="payment-done-btn" onclick="showSuccess()">Payment Done</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(payModal);
+      startTimer(5 * 60, document.getElementById('pay-timer'));
+    }
+
+    function copyUpi() {
+      navigator.clipboard.writeText('vanshxseller06@FAM');
+      const btn = document.querySelector('.copy-upi');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy UPI ID', 1500);
+    }
+
+    function startTimer(duration, display) {
+      let timer = duration, minutes, seconds;
+      display.textContent = formatTime(timer);
+      const interval = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        display.textContent = formatTime(timer);
+
+        if (--timer < 0) {
+          clearInterval(interval);
+          display.textContent = "Expired!";
+          // Optionally, disable the payment done button:
+          const payButton = display.closest('.modal-content').querySelector('.pay-button');
+          if (payButton) {
+            payButton.disabled = true;
+            payButton.textContent = 'Time Expired';
+          }
+        }
+      }, 1000);
+    }
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const s = (seconds % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function showSuccess() {
+      document.querySelector('.modal').remove();
+      const succModal = document.createElement("div");
+      succModal.className = "modal";
+      succModal.innerHTML = `
+        <div class="modal-content">
+          <h3 style="color:#43e97b;">Payment Successful!</h3>
+          <p style="color:#fff;font-size:16px;">Your payment has been received.<br>Order is being processed!</p>
+          <button class="pay-button" onclick="this.closest('.modal').remove()">Close</button>
+        </div>
+      `;
+      document.body.appendChild(succModal);
+    }
+  </script>
+</head>
+<body>
+  <div class="wheel-container">
+    <div class="wheel"></div>
+  </div>
+  <div class="wheel-section">
+    <h2>Spin the Wheel - Win 5000 Diamonds, Skins & More!</h2>
+    <p>Buy EVO Access or minimum 540💎 to participate in our exclusive lucky draw.</p>
+    <ul>
+      <li>🎁 5000 Diamonds</li>
+      <li>🧥 Rare Skins</li>
+      <li>💎 999 Diamonds</li>
+      <li>🔫 Gun Crate</li>
+      <li>🎉 Emotes</li>
+      <li>💰 1000 Diamonds</li>
+      <li>🔥 Exclusive Bundle</li>
+    </ul>
+    <p>Winners announced every Sunday!</p>
+  </div>
+
+  <div class="title">FREE FIRE MAX <span class="discount-badge">40% OFF ON ALL!</span></div>
+  <!-- Banner image removed as per request -->
+  <div class="container">
+    <!-- Row 1: EVO Access -->
+    <div class="row">
+      <h2>EVO Access <span class="discount-badge">40% OFF</span></h2>
+      <div class="item">
+        <span>
+          <span class="original-price">₹100</span>
+          <span class="discounted-price">₹60</span>
+          7 Days - 199💎
+        </span>
+        <button class="button" onclick="showConfirmation('EVO Access (7 Days)', 100)">Buy</button>
+      </div>
+      <div class="item">
+        <span>
+          <span class="original-price">₹290</span>
+          <span class="discounted-price">₹174</span>
+          30 Days - 599💎
+        </span>
+        <button class="button" onclick="showConfirmation('EVO Access (30 Days)', 290)">Buy</button>
+      </div>
+    </div>
+
+    <!-- Row 2: Membership -->
+    <div class="row">
+      <h2>Membership <span class="discount-badge">40% OFF</span></h2>
+      <div class="item">
+        <span>
+          <span class="original-price">₹50</span>
+          <span class="discounted-price">₹30</span>
+          Weekly Lite - 90💎
+        </span>
+        <button class="button" onclick="showConfirmation('Membership (Weekly Lite)', 50)">Buy</button>
+      </div>
+      <div class="item">
+        <span>
+          <span class="original-price">₹159</span>
+          <span class="discounted-price">₹95</span>
+          Weekly - 445💎
+        </span>
+        <button class="button" onclick="showConfirmation('Membership (Weekly)', 159)">Buy</button>
+      </div>
+      <div class="item">
+        <span>
+          <span class="original-price">₹799</span>
+          <span class="discounted-price">₹479</span>
+          Monthly - 2500💎
+        </span>
+        <button class="button" onclick="showConfirmation('Membership (Monthly)', 799)">Buy</button>
+      </div>
+    </div>
+
+    <!-- Row 3: Diamonds -->
+    <div class="row">
+      <h2>Diamonds <span class="discount-badge">40% OFF</span></h2>
+      <div class="item">
+        <span>
+          <span class="original-price">₹80</span>
+          <span class="discounted-price">₹48</span>
+          100💎
+        </span>
+        <button class="button" onclick="showConfirmation('100 Diamonds', 80)">Buy</button>
+      </div>
+      <div class="item">
+        <span>
+          <span class="original-price">₹400</span>
+          <span class="discounted-price">₹240</span>
+          520💎
+        </span>
+        <button class="button" onclick="showConfirmation('520 Diamonds', 400)">Buy</button>
+      </div>
+      <div class="item">
+        <span>
+          <span class="original-price">₹1600</span>
+          <span class="discounted-price">₹960</span>
+          2180💎
+        </span>
+        <button class="button" onclick="showConfirmation('2180 Diamonds', 1600)">Buy</button>
+      </div>
+      <div class="item">
+        <span>
+          <span class="original-price">₹4000</span>
+          <span class="discounted-price">₹2400</span>
+          5600💎
+        </span>
+        <button class="button" onclick="showConfirmation('5600 Diamonds', 4000)">Buy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="discount-badge" style="background:#ffb400;color:#171726;">40% OFF ALL PLANS FOR LIMITED TIME!</span><br>
+    Powered by Garena<br />
+    Trusted by 10,000+ players • Garena Reseller Certified ✔️
+  </div>
+</body>
+</html>
